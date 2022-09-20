@@ -3,9 +3,7 @@ package Model;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import javax.swing.JPanel;
-
-public class House extends JPanel {
+public class House {
   Point position;
   Dimension dimension;
 

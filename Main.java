@@ -1,7 +1,7 @@
-import View.Window;
+import App.App;
 
 public class Main {
   public static void main(String[] args) {
-    new Window();
+    new App();
   }
 }

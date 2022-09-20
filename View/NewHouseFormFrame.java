@@ -1,6 +1,7 @@
 package View;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ import javax.swing.JTextPane;
 import Controller.HouseController;
 
 
-public class FormFrame extends JFrame {
+public class NewHouseFormFrame extends JFrame {
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   public JTextField fieldPosX;
   public JTextField fieldPosY;
@@ -23,11 +24,9 @@ public class FormFrame extends JFrame {
   public JTextField fieldHeight;
   public JButton submitButton;
   public JTextPane errorMessage;
-  private String submitAction;
-
-  public FormFrame(String name, String submitAction){
-    this.submitAction = submitAction;
-    this.setTitle(name);
+  
+  public NewHouseFormFrame(){
+    this.setTitle("CRIAR CASA");
     this.setSize(300,200);
     this.setLocation((int)Math.round((screenSize.width * 0.5) - 150), (int)Math.round((screenSize.height * 0.5) - 100));
     this.setResizable(false);
@@ -90,46 +89,53 @@ public class FormFrame extends JFrame {
     this.add(errorMessage);
     this.add(submitButton);
 
-    this.setVisible(true);
+    this.setVisible(false);
   }
 
   private void registerEvent(){
-    this.submitButton.addActionListener(new ActionListener(){
-      @Override
-      public void actionPerformed(ActionEvent e){
-        int posX = Integer.parseInt(fieldPosX.getText());
-        if(posX > DrawArea.getSizeX() - 21){
-          errorMessage.setText("O valor X máx. é "+ Integer.toString(DrawArea.getSizeX()-21));
-          return;
-        }
-
-        int posY = Integer.parseInt(fieldPosY.getText());
-        if(posY > DrawArea.getSizeY() - 21){
-          errorMessage.setText("O valor Y máx. é "+ Integer.toString(DrawArea.getSizeY()-21));
-          return;
-        }
-
-        int width = Integer.parseInt(fieldWidth.getText());
-        if(width > DrawArea.getSizeX() - posX - 20){
-          errorMessage.setText("O Comp.Máx. é "+Integer.toString(DrawArea.getSizeX() - posX - 20) + " para esta pos.X");
-          return;
-        }
-
-        int height = Integer.parseInt(fieldHeight.getText());
-        if(height > DrawArea.getSizeY() - posY - 20){
-          errorMessage.setText("A Larg.Máx. é "+Integer.toString(DrawArea.getSizeY() - posY - 20) + " para esta pos.Y");
-          return;
-        }
-
-        switch (submitAction){
-          case "house":
+    
+      this.submitButton.addActionListener(new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+          try{
+            int posX = Integer.parseInt(fieldPosX.getText());
+            if(posX > DrawArea.getSizeX() - 1 - (DrawArea.padding * 2)){
+              errorMessage.setText("O valor X máx. é "+ Integer.toString(DrawArea.getSizeX()- 1 - (DrawArea.padding * 2)));
+              return;
+            }
+    
+            int posY = Integer.parseInt(fieldPosY.getText());
+            if(posY > DrawArea.getSizeY() - 21){
+              errorMessage.setText("O valor Y máx. é "+ Integer.toString(DrawArea.getSizeY()- 1 - (DrawArea.padding * 2)));
+              return;
+            }
+    
+            int width = Integer.parseInt(fieldWidth.getText());
+            if(width > DrawArea.getSizeX() - posX - (DrawArea.padding * 2)){
+              errorMessage.setText("O Comp.Máx. é "+Integer.toString(DrawArea.getSizeX() - posX - (DrawArea.padding * 2)) + " para esta pos.X");
+              return;
+            }
+    
+            int height = Integer.parseInt(fieldHeight.getText());
+            if(height > DrawArea.getSizeY() - posY - (DrawArea.padding * 2)){
+              errorMessage.setText("A Larg.Máx. é "+Integer.toString(DrawArea.getSizeY() - posY - (DrawArea.padding * 2)) + " para esta pos.Y");
+              return;
+            }
+    
+        
             HouseController.create(new Point(posX, posY), new Dimension(width, height));
-          break;
+    
+          
+            setVisible(false);
+          }catch(NumberFormatException erro){
+            errorMessage.setText("Algum campo está incorreto");
+          }
         }
+      });
+  }
 
-      
-        setVisible(false);
-      }
-    });
+  public void paint(Graphics g) {
+    errorMessage.setText("");
+    super.paint(g);
   }
 }
