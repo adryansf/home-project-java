@@ -22,14 +22,19 @@ import Controller.WidgetController;
 
 public class NewWidgetFormFrame extends JFrame implements ActionListener {
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  public JTextField fieldPosX;
-  public JTextField fieldPosY;
-  public JTextField fieldWidth;
-  public JTextField fieldHeight;
-  public JButton submitButton;
-  public JTextPane errorMessage;
-  public JComboBox<String> orientationBox;
-  public String type = "window";
+  JTextField fieldPosX;
+  JTextField fieldPosY;
+  JTextField fieldWidth;
+  JTextField fieldHeight;
+  JButton submitButton;
+  JTextPane errorMessage;
+  JLabel orientationLabel;
+  JLabel directionLabel;
+  JComboBox<String> orientationBox;
+  JComboBox<String> directionBox;
+  String type = "window";
+  JLabel labelWidth;
+  JLabel labelHeight;
 
   public NewWidgetFormFrame() {
     this.setTitle("CRIAR VÃO");
@@ -48,21 +53,29 @@ public class NewWidgetFormFrame extends JFrame implements ActionListener {
 
     JLabel labelPosY = new JLabel("POS. Y:");
     labelPosY.setSize(60,20);
-    labelPosY.setLocation(10,60);
+    labelPosY.setLocation(150,20);
     this.fieldPosY = new JTextField();
     labelPosY.setLabelFor(this.fieldPosY);
     this.fieldPosY.setSize(50,20);
-    this.fieldPosY.setLocation(75,60);
+    this.fieldPosY.setLocation(210,20);
 
-    JLabel labelWidth = new JLabel("Comp.:");
+    labelWidth = new JLabel("Comp.:");
     labelWidth.setSize(60,20);
-    labelWidth.setLocation(150,20);
+    labelWidth.setLocation(10,60);
     this.fieldWidth = new JTextField();
     labelWidth.setLabelFor(this.fieldWidth);
     this.fieldWidth.setSize(50,20);
-    this.fieldWidth.setLocation(210,20);
+    this.fieldWidth.setLocation(75,60);
 
-    JLabel labelHeight = new JLabel("Larg.:");
+    labelWidth = new JLabel("Comp.:");
+    labelWidth.setSize(60,20);
+    labelWidth.setLocation(10,60);
+    this.fieldWidth = new JTextField();
+    labelWidth.setLabelFor(this.fieldWidth);
+    this.fieldWidth.setSize(50,20);
+    this.fieldWidth.setLocation(75,60);
+
+    labelHeight = new JLabel("Larg.:");
     labelHeight.setSize(60,20);
     labelHeight.setLocation(150,60);
     this.fieldHeight = new JTextField();
@@ -70,14 +83,25 @@ public class NewWidgetFormFrame extends JFrame implements ActionListener {
     this.fieldHeight.setSize(50,20);
     this.fieldHeight.setLocation(210,60);
 
-    JLabel labelOrientationBox = new JLabel("Orientação:");
-    labelOrientationBox.setSize(90,20);
-    labelOrientationBox.setLocation(10,100);
-    String[] options = {"Horizontal", "Vertical"};
-    this.orientationBox = new JComboBox<String>(options);
-    labelOrientationBox.setLabelFor(this.orientationBox);
+    this.orientationLabel = new JLabel("Orientação:");
+    this.orientationLabel.setSize(90,20);
+    this.orientationLabel.setLocation(10,100);
+    String[] optionsOrientation = {"Horizontal", "Vertical"};
+    this.orientationBox = new JComboBox<String>(optionsOrientation);
+    this.orientationLabel.setLabelFor(this.orientationBox);
     this.orientationBox.setSize(110,20);
     this.orientationBox.setLocation(110,100);
+
+    this.directionLabel = new JLabel("Direção:");
+    this.directionLabel.setSize(90,20);
+    this.directionLabel.setLocation(10,100);
+    String[] optionsDirection = {"Cima", "Esquerda", "Direita", "Baixo"};
+    this.directionBox = new JComboBox<String>(optionsDirection);
+    this.directionLabel.setLabelFor(this.directionBox);
+    this.directionBox.setSize(110,20);
+    this.directionBox.setLocation(110,100);
+    this.directionBox.setVisible(false);
+    this.directionLabel.setVisible(false);
 
     JRadioButton windowButton = new JRadioButton("Janela");
     windowButton.setActionCommand("window");
@@ -125,8 +149,10 @@ public class NewWidgetFormFrame extends JFrame implements ActionListener {
     this.add(fieldWidth);
     this.add(labelHeight);
     this.add(fieldHeight);
-    this.add(labelOrientationBox);
+    this.add(orientationLabel);
     this.add(orientationBox);
+    this.add(directionLabel);
+    this.add(directionBox);
     this.add(errorMessage);
     this.add(submitButton);
     this.add(windowButton);
@@ -170,9 +196,11 @@ public class NewWidgetFormFrame extends JFrame implements ActionListener {
             return;
           }
   
-          
-          WidgetController.create(new Point(posX, posY), new Dimension(width, height), type, orientationBox.getItemAt(orientationBox.getSelectedIndex()));
-     
+          if(type == "door"){
+            WidgetController.create(new Point(posX, posY), new Dimension(width, width), directionBox.getItemAt(directionBox.getSelectedIndex()));
+          }else{
+            WidgetController.create(new Point(posX, posY), new Dimension(width, height), type, orientationBox.getItemAt(orientationBox.getSelectedIndex()));
+          }
         
           setVisible(false);
         }catch(NumberFormatException erro){
@@ -185,6 +213,15 @@ public class NewWidgetFormFrame extends JFrame implements ActionListener {
 
   public void actionPerformed(ActionEvent e){
     this.type = e.getActionCommand();
+    
+    this.fieldHeight.setVisible(this.type != "door");
+    this.fieldHeight.setText("0");
+    this.labelHeight.setVisible(this.type != "door");
+
+    this.orientationLabel.setVisible(this.type != "door");
+    this.orientationBox.setVisible(this.type != "door");
+    this.directionLabel.setVisible(this.type == "door");
+    this.directionBox.setVisible(this.type == "door");
   }
 
   public void paint(Graphics g) {

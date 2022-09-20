@@ -19,12 +19,12 @@ import Controller.RoomController;
 
 public class NewRoomFormFrame extends JFrame {
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  public JTextField fieldPosX;
-  public JTextField fieldPosY;
-  public JTextField fieldWidth;
-  public JTextField fieldHeight;
-  public JButton submitButton;
-  public JTextPane errorMessage;
+  JTextField fieldPosX;
+  JTextField fieldPosY;
+  JTextField fieldWidth;
+  JTextField fieldHeight;
+  JButton submitButton;
+  JTextPane errorMessage;
 
   public NewRoomFormFrame(){
     this.setTitle("CRIAR CÔMODO");
@@ -43,19 +43,19 @@ public class NewRoomFormFrame extends JFrame {
 
     JLabel labelPosY = new JLabel("POS. Y:");
     labelPosY.setSize(60,20);
-    labelPosY.setLocation(10,60);
+    labelPosY.setLocation(150,20);
     this.fieldPosY = new JTextField();
     labelPosY.setLabelFor(this.fieldPosY);
     this.fieldPosY.setSize(50,20);
-    this.fieldPosY.setLocation(75,60);
+    this.fieldPosY.setLocation(210,20);
 
     JLabel labelWidth = new JLabel("Comp.:");
     labelWidth.setSize(60,20);
-    labelWidth.setLocation(150,20);
+    labelWidth.setLocation(10,60);
     this.fieldWidth = new JTextField();
     labelWidth.setLabelFor(this.fieldWidth);
     this.fieldWidth.setSize(50,20);
-    this.fieldWidth.setLocation(210,20);
+    this.fieldWidth.setLocation(75,60);
 
     JLabel labelHeight = new JLabel("Larg.:");
     labelHeight.setSize(60,20);

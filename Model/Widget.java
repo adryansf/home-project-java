@@ -9,13 +9,12 @@ public class Widget {
   Point position;
   Dimension dimension;
   String type;
-  String orientation;
+  
 
-  public Widget(Point pos, Dimension dim, String type, String orientation){
+  public Widget(Point pos, Dimension dim, String type){
     this.position = pos;
     this.dimension = dim;
     this.type = type;
-    this.orientation = orientation;
   }
 
   public Point getPosition(){
@@ -28,9 +27,5 @@ public class Widget {
 
   public String getType(){
     return this.type;
-  }
-
-  public String getOrientation(){
-    return this.orientation;
   }
 }
